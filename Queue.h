@@ -33,7 +33,7 @@ public:
 	// Removes one element from the queue;
 	T Pop()
 	{
-		if(count == 0) return;			// Implement Mutex Here
+		if(count == 0) return 0;			// Implement Mutex Here
 
 		pop_index = (pop_index + 1) % capacity;	    // Values between 0 - (capacity-1)
 		count--;
