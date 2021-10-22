@@ -5,11 +5,11 @@ template <typename T>
 class Queue
 {
 private:
-	int *array;						// Pointer for array where elements will be stored
-	int capacity;					// Total size of the Queue
-	int count;						// Current total of elements in the queue
-	int push_index; 				// Current index to where next element shall be added 
-	int pop_index;  				// Current index for where next element shall be removed (first in)
+	int *array;			// Pointer for array where elements will be stored
+	int capacity;		// Total size of the Queue
+	int count;			// Current total of elements in the queue
+	int push_index; 	// Current index to where next element shall be added 
+	int pop_index;  	// Current index for where next element shall be removed (first in)
 
 public:
 	std::mutex queue_mutex; 		// Protects against race conditions of shared variables
@@ -28,17 +28,23 @@ public:
 	// Adds one element to the end of the queue;
 	void Push(T element)
 	{
-		array[push_index] = element;					// Adds the new element
-		push_index = (push_index + 1) % capacity;		// Values between 0 - (capacity-1)
-		++count;										// Updates total elements in Queue
+		// Adds the new element
+		array[push_index] = element;		
+		// Values between 0 - (capacity-1)			
+		push_index = (push_index + 1) % capacity;	
+		// Updates total elements in Queue	
+		++count;										
 	}
 
 	// Removes one element from the queue;
 	T Pop()
 	{
-		pop_index = (pop_index + 1) % capacity;	    	// Values between 0 - (capacity-1)
-		--count;										// Updates total elements in Queue
-		return array[pop_index];						// Return removed element
+		// Values between 0 - (capacity-1)
+		pop_index = (pop_index + 1) % capacity;	  
+		// Updates total elements in Queue  	
+		--count;							
+		// Return removed element			
+		return array[pop_index];						
 	}
 
 	// Returns the current number of elements in the queue;

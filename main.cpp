@@ -7,10 +7,13 @@ void push_thread(Queue<int>* queue)
 {
 	while(1)
 	{
-		std::unique_lock<std::mutex> lock(queue->queue_mutex);	// Locks the Mutex
-		while(queue->Count() == queue->Size())					// Queue is at full capacity, wait for a element to be removed
+		// Locks the Mutex
+		std::unique_lock<std::mutex> lock(queue->queue_mutex);	
+		// Queue is at full capacity, wait for a element to be removed
+		while(queue->Count() == queue->Size())					
 		{
-			queue->block.wait(lock);							// Release the Mutex and suspend the execution of the thread
+			// Release the Mutex and suspend the execution of the thread
+			queue->block.wait(lock);							
 		}
 
 		int random = rand() % 100 + 1;
@@ -18,9 +21,11 @@ void push_thread(Queue<int>* queue)
 		cout << "Push(" + to_string(random) + ")\n";	
 		//this_thread::sleep_for(50ms);
 
-		lock.unlock();											// Unlock Mutex before notifying to prevent other thread from waking up
-	 	 														// 	just to be blocked again afterwards
-		queue->block.notify_one();								// Notify one thread that might be waiting
+		// Unlock Mutex before notifying to prevent other thread from waking up
+	 	// 	just to be blocked again afterwards
+		lock.unlock();	
+		// Notify one thread that might be waiting										
+		queue->block.notify_one();								
 	}
 }
 
@@ -28,18 +33,23 @@ void pop_thread(Queue<int>* queue)
 {
 	while(1)
 	{
-		std::unique_lock<std::mutex> lock(queue->queue_mutex);	// Locks the Mutex
-		while(queue->Count() == 0)								// Queue empty, wait for a element to be added
+		// Locks the Mutex
+		std::unique_lock<std::mutex> lock(queue->queue_mutex);	
+		// Queue empty, wait for a element to be added
+		while(queue->Count() == 0)								
 		{
-			queue->block.wait(lock);							// Release the Mutex and suspend the execution of the thread
+			// Release the Mutex and suspend the execution of the thread
+			queue->block.wait(lock);							
 		}
 
 		cout << "Removed element:" + to_string(queue->Pop()) + "\n";	
 		//this_thread::sleep_for(100ms);
 
-		lock.unlock();											// Unlock Mutex before notifying to prevent other thread from waking up
-	 	 														// 	just to be blocked again afterwards
-		queue->block.notify_one();								// Notify one thread that might be waiting
+		// Unlock Mutex before notifying to prevent other thread from waking up
+	 	// 	just to be blocked again afterwards
+		lock.unlock();
+		// Notify one thread that might be waiting											
+		queue->block.notify_one();								
 	}
 }
 
