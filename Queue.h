@@ -28,6 +28,8 @@ public:
 	// Adds one element to the end of the queue;
 	void Push(T element)
 	{
+		// If queue is already full, return
+		if(IsFull()) return;
 		// Adds the new element
 		array[push_index] = element;		
 		// Values between 0 - (capacity-1)			
@@ -39,6 +41,8 @@ public:
 	// Removes one element from the queue;
 	T Pop()
 	{
+		// If queue is empty return null
+		if(IsEmpty()) throw std::logic_error("Tried to Pop element from empty Queue!");
 		// Values between 0 - (capacity-1)
 		pop_index = (pop_index + 1) % capacity;	  
 		// Updates total elements in Queue  	
@@ -59,11 +63,13 @@ public:
 		return capacity;
 	}
 
+	// Returns true if queue is already at full capacity
 	bool IsFull()
 	{
 		return count == capacity;
 	}
 
+	// Returns true if number of elements in queue are 0
 	bool IsEmpty()
 	{
 		return count == 0;

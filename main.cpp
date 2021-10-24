@@ -29,7 +29,7 @@ void push_thread(Queue<int>* queue)
 		// Print current elements in Queue
 		cout << "		" + queue->ToString() + "\n";
 
-		this_thread::sleep_for(100ms);
+		this_thread::sleep_for(50ms);
 		// Unlock Mutex before notifying to prevent other thread from waking up
 	 	// 	just to be blocked again afterwards
 		lock.unlock();	
@@ -55,7 +55,7 @@ void pop_thread(Queue<int>* queue)
 		// Remove the element and print status
 		cout << "					Pop() -> " + to_string(queue->Pop()) + "\n";	
 
-		this_thread::sleep_for(100ms);
+		this_thread::sleep_for(50ms);
 		// Unlock Mutex before notifying to prevent other thread from waking up
 	 	// 	just to be blocked again afterwards
 		lock.unlock();
@@ -68,13 +68,17 @@ int main()
 {
 
 	cout << "Writing Thread		Queue		Reading Thread\n";	
+	// Initialize Queue class
 	Queue<int> sample(2);
 	cout << "New Queue<int>(2)\n";	
-	thread t1(push_thread, &sample);
-	thread t2(pop_thread, &sample);
 
-	t1.join();
-	t2.join();
+	// Initialize Push and Pop thread
+	thread t_push(push_thread, &sample);
+	thread t_pop(pop_thread, &sample);
+
+	// Join threads so that main does not return until threads finish their life cycle
+	t_push.join();
+	t_pop.join();
 	
     return 0;
 }
