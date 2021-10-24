@@ -58,4 +58,25 @@ public:
 	{
 		return capacity;
 	}
+
+	// Converts current elements in queue to std::string (useful to print)
+	std::string ToString()
+	{
+		// If empty, return empty string
+		if (count == 0) return "";
+
+		// Initialize tmp string to build
+		std::string tmp = "";
+		int tmp_count = 0;
+		// Starts from the oldest element (first to pop) until it reach value of count
+		for (int i = (pop_index + 1) % capacity ; tmp_count < count ; i = (i + 1) % capacity)
+		{
+			tmp += std::to_string(array[i]) + ",";
+			++tmp_count;
+		}
+		
+		// Removes last comma
+		tmp.pop_back();
+		return tmp;
+	}
 };

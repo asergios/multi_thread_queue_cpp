@@ -7,25 +7,35 @@ void push_thread(Queue<int>* queue)
 {
 	while(1)
 	{
+		// Create value to be added
+		int random = rand() % 100 + 1;
+
 		// Locks the Mutex
 		std::unique_lock<std::mutex> lock(queue->queue_mutex);	
+		// Print status prefix
+		cout << "Push(" + to_string(random) + ") ";
 		// Queue is at full capacity, wait for a element to be removed
 		while(queue->Count() == queue->Size())					
 		{
+			cout << " // blocks \n";
 			// Release the Mutex and suspend the execution of the thread
-			queue->block.wait(lock);							
+			queue->block.wait(lock);		
+			cout << "// is released";					
 		}
 
-		int random = rand() % 100 + 1;
+		// Add the element and print status
 		queue->Push(random);
-		cout << "Push(" + to_string(random) + ")\n";	
-		//this_thread::sleep_for(50ms);
 
+		// Print current elements in Queue
+		cout << "		" + queue->ToString() + "\n";
+
+		this_thread::sleep_for(100ms);
 		// Unlock Mutex before notifying to prevent other thread from waking up
 	 	// 	just to be blocked again afterwards
 		lock.unlock();	
 		// Notify one thread that might be waiting										
-		queue->block.notify_one();								
+		queue->block.notify_one();	
+		//this_thread::sleep_for(20ms);							
 	}
 }
 
@@ -42,9 +52,10 @@ void pop_thread(Queue<int>* queue)
 			queue->block.wait(lock);							
 		}
 
-		cout << "Removed element:" + to_string(queue->Pop()) + "\n";	
-		//this_thread::sleep_for(100ms);
+		// Remove the element and print status
+		cout << "					Pop() -> " + to_string(queue->Pop()) + "\n";	
 
+		this_thread::sleep_for(100ms);
 		// Unlock Mutex before notifying to prevent other thread from waking up
 	 	// 	just to be blocked again afterwards
 		lock.unlock();
@@ -56,7 +67,7 @@ void pop_thread(Queue<int>* queue)
 int main()
 {
 
-	cout << "Writing Thread 		Queue Reading 		Thread\n";	
+	cout << "Writing Thread		Queue		Reading Thread\n";	
 	Queue<int> sample(2);
 	cout << "New Queue<int>(2)\n";	
 	thread t1(push_thread, &sample);
