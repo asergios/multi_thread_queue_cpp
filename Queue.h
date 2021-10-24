@@ -59,6 +59,16 @@ public:
 		return capacity;
 	}
 
+	bool IsFull()
+	{
+		return count == capacity;
+	}
+
+	bool IsEmpty()
+	{
+		return count == 0;
+	}
+
 	// Converts current elements in queue to std::string (useful to print)
 	std::string ToString()
 	{

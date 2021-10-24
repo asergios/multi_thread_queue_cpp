@@ -15,7 +15,7 @@ void push_thread(Queue<int>* queue)
 		// Print status prefix
 		cout << "Push(" + to_string(random) + ") ";
 		// Queue is at full capacity, wait for a element to be removed
-		while(queue->Count() == queue->Size())					
+		while(queue->IsFull())					
 		{
 			cout << " // blocks \n";
 			// Release the Mutex and suspend the execution of the thread
@@ -46,7 +46,7 @@ void pop_thread(Queue<int>* queue)
 		// Locks the Mutex
 		std::unique_lock<std::mutex> lock(queue->queue_mutex);	
 		// Queue empty, wait for a element to be added
-		while(queue->Count() == 0)								
+		while(queue->IsEmpty())								
 		{
 			// Release the Mutex and suspend the execution of the thread
 			queue->block.wait(lock);							
