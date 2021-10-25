@@ -78,4 +78,22 @@ TEST_F(QueueTest, PushWorks) {
 	EXPECT_EQ(2, q2_.Count());
 }
 
+// Testing ToString method in various contexts
+TEST_F(QueueTest, ToStringWorks) {
+	// Expected print with initial config
+	EXPECT_EQ("", q0_.ToString());
+	EXPECT_EQ("1", q1_.ToString());
+	EXPECT_EQ("2,3", q2_.ToString());
+	// Pop one element from q2
+	q2_.Pop();
+	EXPECT_EQ("3", q2_.ToString());
+	// Pop one element from q1
+	q1_.Pop();
+	EXPECT_EQ("", q1_.ToString());
+	// Pushing one element to q0
+	q0_.Push(5);
+	EXPECT_EQ("5", q0_.ToString());
+}
+
+
 
