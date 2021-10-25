@@ -29,7 +29,7 @@ void push_thread(Queue<int>* queue)
 		// Print current elements in Queue
 		cout << "		" + queue->ToString() + "\n";
 
-		this_thread::sleep_for(50ms);
+		//this_thread::sleep_for(50ms);
 		// Unlock Mutex before notifying to prevent other thread from waking up
 	 	// 	just to be blocked again afterwards
 		lock.unlock();	
@@ -55,7 +55,7 @@ void pop_thread(Queue<int>* queue)
 		// Remove the element and print status
 		cout << "					Pop() -> " + to_string(queue->Pop()) + "\n";	
 
-		this_thread::sleep_for(50ms);
+		//this_thread::sleep_for(50ms);
 		// Unlock Mutex before notifying to prevent other thread from waking up
 	 	// 	just to be blocked again afterwards
 		lock.unlock();
